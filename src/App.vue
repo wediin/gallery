@@ -12,6 +12,7 @@
         md="8"
         sm="12">
         <router-view/>
+        <upload />>
       </b-col>
     </b-row>
   </b-container>
@@ -19,9 +20,13 @@
 
 <script>
 import Side from '@/views/Sidebar'
+import Upload from '@/views/Upload'
+import './css/fontawesome.min.css'
+
 export default {
   components: {
-    Side
+    Side,
+    Upload
   }
 
 }
@@ -44,8 +49,8 @@ export default {
       color: #2c3e50;
 
       &.router-link-exact-active {
-        color: #42b983;
-      }
-    }
+  color: #42b983;
+  }
+  }
   }
 </style>

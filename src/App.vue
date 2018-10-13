@@ -21,7 +21,6 @@
 <script>
 import Side from '@/views/Sidebar'
 import Upload from '@/views/Upload'
-import './css/fontawesome.min.css'
 
 export default {
   components: {

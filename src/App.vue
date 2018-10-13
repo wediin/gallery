@@ -3,8 +3,16 @@
     id="app"
     fluid>
     <b-row>
-      <side />
-      <router-view />
+      <b-col
+        md="4"
+        sm="12">
+        <side/>
+      </b-col>
+      <b-col
+        md="8"
+        sm="12">
+        <router-view/>
+      </b-col>
     </b-row>
   </b-container>
 </template>

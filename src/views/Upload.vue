@@ -61,9 +61,9 @@
           :multiple="true"
           :size="1024 * 1024 * 10"
           v-model="files"
+          :custom-action="uploadFile"
           style="margin-right: 10px"
           class="float-right btn btn-primary"
-          post-action="/upload/post"
           extensions="gif,jpg,jpeg,png,webp"
           accept="image/png,image/gif,image/jpeg,image/webp"
           @input-filter="inputFilter"
@@ -93,6 +93,7 @@
 
 <script>
 import FileUpload from 'vue-upload-component'
+import axios from 'axios'
 export default {
   components: {
     FileUpload
@@ -134,6 +135,18 @@ export default {
     },
     startUpload () {
       this.$refs.upload.active = true
+    },
+    uploadFile (file, component) {
+      const request = axios.create({
+        baseURL: 'http://220.135.75.2:9527/',
+        timeout: 5000
+      })
+
+      let formdata = new FormData()
+      formdata.append('file', file.file)
+      formdata.append('contributor', this.contributor)
+
+      request.post('upload', formdata)
     }
   }
 }

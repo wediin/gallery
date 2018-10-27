@@ -27,6 +27,9 @@ fontawesome.library.add(regular)
 fontawesome.library.add(brands)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
+Vue.use(BootstrapVue)
+
+// init vue apollo
 const httpLink = new HttpLink({
   uri: 'http://220.135.75.2:9527/graphql'
 })
@@ -43,7 +46,6 @@ const apolloProvider = new VueApollo({
 })
 Vue.use(VueApollo)
 
-Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
 new Vue({

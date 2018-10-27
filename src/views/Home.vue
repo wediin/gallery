@@ -9,10 +9,11 @@
       style="column-count: 4"
       columns>
       <b-card
-        v-for="photo in photos"
+        v-for="(photo, idx) in photos"
         :key="photo.id"
         :img-src="photo.urls[0]"
         :img-alt="photo.urls[0]"
+        style="display: inline-block"
         no-body
         img-fluid
         img-top
@@ -69,7 +70,7 @@ export default {
   },
   computed: {
     photoSrc () {
-      return this.photo.map((item) => {
+      return this.photos.map((item) => {
         return item.urls[0]
       })
     }

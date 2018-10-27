@@ -1,26 +1,36 @@
 <template>
-  <b-card-group
-    style="column-count: 3"
-    columns>
-    <b-card
-      v-for="photo in photo"
-      :key="photo.id"
-      :img-src="photo.urls[0]"
-      :img-alt="photo.urls[0]"
-      no-body
-      img-fluid
-      img-top/>
-  </b-card-group>
+  <div>
+    <vue-gallery
+      :images="photoSrc"
+      :index="index"
+      :options="galleryOptions"
+      @close="index = null"/>
+    <b-card-group
+      style="column-count: 4"
+      columns>
+      <b-card
+        v-for="(photo, idx) in photo"
+        :key="photo.id"
+        :img-src="photo.urls[0]"
+        :img-alt="photo.urls[0]"
+        no-body
+        img-fluid
+        img-top
+        @click="index = idx"/>
+    </b-card-group>
+  </div>
 </template>
 
 <script>
 // @ is an alias to /src
 import photoAPI from '@/api/photo'
 import DateDiff from 'date-diff'
+import VueGallery from 'vue-gallery'
 
 export default {
   name: 'Home',
   components: {
+    VueGallery
   },
   filters: {
     dateDiff (timestamp) {
@@ -48,7 +58,18 @@ export default {
   },
   data () {
     return {
-      photo: []
+      photo: [],
+      index: null,
+      galleryOptions: {
+        stretchImages: 'contain'
+      }
+    }
+  },
+  computed: {
+    photoSrc () {
+      return this.photo.map((item) => {
+        return item.urls[0]
+      })
     }
   },
   created () {

@@ -21,7 +21,7 @@
         <div class="upload">
           <ul>
             <li
-              v-for="(file, index) in files"
+              v-for="file in files"
               :key="file.id"
               style="text-align: left;">
               <span>{{ file.name }}</span> -

@@ -9,7 +9,7 @@
       style="column-count: 4"
       columns>
       <b-card
-        v-for="(photo, idx) in photo"
+        v-for="photo in photos"
         :key="photo.id"
         :img-src="photo.urls[0]"
         :img-alt="photo.urls[0]"
@@ -26,6 +26,7 @@
 import photoAPI from '@/api/photo'
 import DateDiff from 'date-diff'
 import VueGallery from 'vue-gallery'
+import gql from 'graphql-tag'
 
 export default {
   name: 'Home',
@@ -58,6 +59,7 @@ export default {
   },
   data () {
     return {
+      photos: [],
       photo: [],
       index: null,
       galleryOptions: {
@@ -80,6 +82,17 @@ export default {
       const response = await photoAPI.getPhoto()
       this.photo = response.data
     }
+  },
+  apollo: {
+    photos: gql`query {
+      photos {
+        id
+        contributor
+        urls
+        time
+        masked
+      }
+    }`
   }
 }
 </script>

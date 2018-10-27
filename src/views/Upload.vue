@@ -146,7 +146,9 @@ export default {
       formdata.append('file', file.file)
       formdata.append('contributor', this.contributor)
 
-      request.post('upload', formdata)
+      request.post('upload', formdata, { headers: {
+        'Content-Type': 'multipart/form-data'
+      } })
     }
   }
 }

@@ -12,7 +12,6 @@
         md="8"
         sm="12">
         <router-view/>
-        <upload />>
       </b-col>
     </b-row>
   </b-container>

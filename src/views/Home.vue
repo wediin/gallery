@@ -76,15 +76,6 @@
               aria-hidden="true"/>
             Stop Upload
           </button>
-          <button
-            type="button"
-            class="float-right btn btn-danger"
-            @click="refresh">
-            <i
-              class="fa fa-stop"
-              aria-hidden="true"/>
-            Refresh
-          </button>
           <file-upload
             ref="upload"
             :multiple="true"
@@ -170,8 +161,7 @@ export default {
       },
       show: false,
       contributor: '',
-      files: [],
-      getPhotos: null
+      files: []
     }
   },
   computed: {
@@ -183,15 +173,6 @@ export default {
   },
   created () {
     this.getPhoto()
-    this.getPhotos = gql`query {
-        photos {
-          id
-          contributor
-          urls
-          time
-          masked
-        }
-      }`
   },
   methods: {
     async getPhoto () {
@@ -234,46 +215,33 @@ export default {
         timeout: 5000
       })
 
-      // console.log('before upload ' + this.photos.length)
-
       let formdata = new FormData()
       formdata.append('file', file.file)
       formdata.append('contributor', this.contributor)
 
-      request.post('upload', formdata, { headers: {
-        'Content-Type': 'multipart/form-data'
-      } })
+      request.post('upload', formdata, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then(r => {
+        this.$apollo.queries.photos.refetch()
+      })
+
       return new Promise((resolve, reject) => {
         resolve()
-        // console.log('before query ' + this.photos.length)
-        // Object.values(this.$apollo.queries).forEach(q => q.refetch())
-
-        // this.$set(this.photos, this.photos.length, this.photos[0])
       })
-    },
-    refresh () {
-      this.$apollo.query({ query: this.getPhotos })
-        .then(res => {
-          Object.assign(this.photos, res.data.photos)
-          console.log('response data')
-          console.log(res.data.photos)
-          console.log('after query ' + this.photos.length)
-        })
-        .catch(err => {
-          console.log(err)
-        })
     }
   },
   apollo: {
-    photos: gql`query {
-      photos {
-        id
-        contributor
-        urls
-        time
-        masked
-      }
-    }`
+    photos: {
+      query: gql`query {
+          photos {
+            id
+            contributor
+            urls
+            time
+            masked
+          }
+        }`
+    }
   }
 }
 </script>

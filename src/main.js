@@ -31,7 +31,7 @@ Vue.use(BootstrapVue)
 
 // init vue apollo
 const httpLink = new HttpLink({
-  uri: 'http://220.135.75.2:9527/graphql'
+  uri: 'http://gallery.kvnmm.com:8000/graphql'
 })
 
 // Create the apollo client

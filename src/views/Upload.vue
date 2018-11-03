@@ -138,7 +138,7 @@ export default {
     },
     uploadFile (file, component) {
       const request = axios.create({
-        baseURL: 'http://gallery.kvnmm.com:8000/',
+        baseURL: 'https://gallery.kvnmm.com/',
         timeout: 5000
       })
 

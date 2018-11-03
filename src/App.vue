@@ -1,4 +1,4 @@
-<template>
+<template style="background-color:#FFFFFB">
   <b-container
     id="app"
     fluid>

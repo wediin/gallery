@@ -11,8 +11,8 @@
       <b-card
         v-for="(photo, idx) in photos"
         :key="photo.id"
-        :img-src="photo.urls[0]"
-        :img-alt="photo.urls[0]"
+        :img-src="photo.thumbURL"
+        :img-alt="photo.thumbURL"
         style="display: inline-block"
         class="kcard"
         header-class="kimg"
@@ -168,7 +168,6 @@ export default {
   data () {
     return {
       photos: [],
-      photo: [],
       index: null,
       galleryOptions: {
         // stretchImages: 'contain',
@@ -202,18 +201,11 @@ export default {
   computed: {
     photoSrc () {
       return this.photos.map((item) => {
-        return item.urls[0]
+        return item.webviewURL
       })
     }
   },
-  created () {
-    this.getPhoto()
-  },
   methods: {
-    async getPhoto () {
-      const response = await photoAPI.getPhoto()
-      this.photo = response.data
-    },
     inputFilter (newFile, oldFile, prevent) {
       if (newFile && !oldFile) {
         // Before adding a file
@@ -246,7 +238,7 @@ export default {
     },
     uploadFile (file, component) {
       const request = axios.create({
-        baseURL: 'http://220.135.75.2:9527/',
+        baseURL: 'http://gallery.kvnmm.com:8000/',
         timeout: 5000
       })
 
@@ -266,17 +258,17 @@ export default {
     }
   },
   apollo: {
-    photos: {
-      query: gql`query {
+    photos: gql`query {
           photos {
-            id
-            contributor
-            urls
-            time
-            masked
+              id
+              contributor
+              originURL
+              webviewURL
+              thumbURL
+              time
+              masked
           }
-        }`
-    }
+      }`
   }
 }
 </script>

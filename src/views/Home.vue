@@ -6,7 +6,7 @@
       :options="galleryOptions"
       @close="index = null"/>
     <b-card-group
-      style="column-count: 4"
+      :style="{columnCount: 4, columnGap: 5 + 'px'}"
       columns>
       <b-card
         v-for="(photo, idx) in photos"
@@ -14,9 +14,11 @@
         :img-src="photo.urls[0]"
         :img-alt="photo.urls[0]"
         style="display: inline-block"
+        class="kcard"
+        header-class="kimg"
         no-body
         img-fluid
-        img-top
+
         @click="index = idx"/>
     </b-card-group>
     <div>
@@ -98,17 +100,29 @@
 </template>
 
 <style>
+  .kcard {
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 8px !important;
+  }
+  .kimg {
+    border-top-left-radius: 2px !important;
+    border-top-right-radius: 2px !important;
+    border-bottom-left-radius: 2px !important;
+    border-bottom-right-radius: 2px !important;
+  }
   .button-float{
     position:fixed;
     width:60px;
     height:60px;
     bottom:40px;
     right:40px;
-    background-color:#0C9;
+    background-color:#AB3B3A !important;
+    border-color: #AB3B3A !important;
     color:#FFF;
     border-radius:50px !important;
     text-align:center;
-    box-shadow: 2px 2px 3px #999;
+    box-shadow: 2px 2px 3px #64363C;
   }
 </style>
 

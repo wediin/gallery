@@ -1,7 +1,15 @@
 <template>
   <div class="side">
-    <div>kvnmm</div>
-    <div>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Error animi veniam quibusdam molestias expedita voluptatum rerum ipsum odit perspiciatis eos facere repudiandae incidunt tempore, dignissimos temporibus illo odio blanditiis doloremque.</div>
+    <img
+      id="title"
+      src="@/assets/kvnmmgallery.png"
+    >
+    <p>2018/11/24
+    彥彬&愛名的婚禮婚禮
+
+    婚禮每個重要瞬間都不錯過
+    美美的婚禮照片都在這裡
+    大家一起看、一起分享喔</p>
   </div>
 </template>
 
@@ -12,6 +20,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+  .side {
+    p {
+      white-space: pre-line;
+    }
+    #title {
+        max-width: 50%;
+    }
+  }
 
 @media screen and (min-width: 768px) {
   .side {

@@ -20,11 +20,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import url(//fonts.googleapis.com/earlyaccess/notosanstc.css);
-
   .side {
     p {
-      font-family: 'Noto Sans TC', sans-serif;
       color: #1C1C1C;
       white-space: pre-line;
     }

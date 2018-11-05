@@ -10,13 +10,13 @@
     <b-modal
       id="uploadModal"
       v-model="show"
-      title="Upload Picture">
+      title="照片上傳">
       <div>
         <div>
           <b-form-input
             v-model="contributor"
             type="text"
-            placeholder="Enter your name"/>
+            placeholder="我的名字"/>
         </div>
         <div class="upload">
           <ul>
@@ -44,7 +44,7 @@
           <i
             class="fa fa-arrow-up"
             aria-hidden="true"/>
-          Start Upload
+          上傳個
         </button>
         <button
           v-else=""
@@ -69,7 +69,7 @@
           @input-filter="inputFilter"
           @input-file="inputFile">
           <i class="fa fa-plus"/>
-          Select files
+          選擇照片
         </file-upload>
       </div>
     </b-modal>

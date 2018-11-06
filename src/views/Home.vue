@@ -5,7 +5,25 @@
       :index="index"
       :options="galleryOptions"
       @close="index = null"/>
-    <b-card-group
+    <div class="kgroup">
+      <img
+        v-lazy="photo.thumbURL"
+        v-for="(photo, idx) in photos"
+        :key="photo.thumbURL"
+        class="kcard"
+        @click="index = idx">
+    </div>
+    <!-- <div
+      v-lazy-container="{ selector: 'img', error: 'xxx.jpg', loading: '@/assets/loading.gif'}"
+      class="kgroup">
+      <img
+        v-for="(photo, idx) in photos"
+        :key="photo.thumbURL"
+        :data-src="photo.thumbURL"
+        class="kcard"
+        @click.native="index = idx">
+    </div> -->
+    <!-- <b-card-group
       :style="{columnCount: 4, columnGap: 5 + 'px'}"
       columns>
       <b-card
@@ -20,7 +38,7 @@
         img-fluid
 
         @click="index = idx"/>
-    </b-card-group>
+    </b-card-group> -->
     <div>
       <b-button
         v-b-modal.uploadModal=""
@@ -100,10 +118,29 @@
 </template>
 
 <style>
+  .kgroup {
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-flow: row wrap;
+    align-content: flex-end;
+  }
   .kcard {
-    margin-right: 0;
+    display: inline-block;
+    display: flex;
+    width: 31%;
+    margin: 2px;
+    object-fit: cover; /* Do not scale the image */
+    object-position: top; /* Center the image within the element */
+    /* margin-right: 0;
     margin-left: 0;
-    margin-bottom: 8px !important;
+    margin-bottom: 8px !important; */
+  }
+  .kcard:before {
+    padding-top: 100%;
+    display: block;
   }
   .kimg {
     border-top-left-radius: 2px !important;

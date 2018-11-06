@@ -18,6 +18,7 @@ import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
+import VueLazyload from 'vue-lazyload'
 
 const VueUploadComponent = require('vue-upload-component')
 Vue.component('file-upload', VueUploadComponent)
@@ -45,6 +46,10 @@ const apolloProvider = new VueApollo({
   defaultClient: apolloClient
 })
 Vue.use(VueApollo)
+Vue.use(VueLazyload, {
+  error: 'dist/error.png',
+  loading: '@/assets/loading.gif'
+})
 
 Vue.config.productionTip = false
 

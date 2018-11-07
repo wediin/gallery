@@ -150,31 +150,30 @@
     text-align:center;
     box-shadow: 2px 2px 3px #64363C;
   }
+  .spin{
+    position:absolute;
+    z-index:101;
+    width:100%;
+    height:100%;
+    vertical-align: middle;
+    text-align: center;
+    display: table;
+    top:0px;
+    padding: 20px;
+  }
+  .upload-preview{
+    position:relative;
+    z-index: 100;
+    padding: 3px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: 2px;
+    width: 60px;
+    height: 60px;
+  }
   .upload-preview-pending{
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-top: 3px;
-    margin-bottom: 2px;
     opacity: 0.5;
-    width: 60px;
-    height: 60px;
-  }
-  .upload-preview-uploading{
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-top: 3px;
-    margin-bottom: 2px;
-    opacity: 0.8;
-    width: 60px;
-    height: 60px;
-  }
-  .upload-preview-completed{
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-top: 3px;
-    margin-bottom: 2px;
-    width: 60px;
-    height: 60px;
   }
 </style>
 
@@ -297,7 +296,7 @@ export default {
       let formdata = new FormData()
       formdata.append('file', file.file)
       formdata.append('contributor', this.contributor)
-      this.updateUploadImgStatus(file, 'upload-preview-uploading')
+      this.updateUploadImgStatus(file)
 
       request.post('upload', formdata,
         {
@@ -306,7 +305,9 @@ export default {
         this.$apollo.queries.photos.refetch()
         // this.show = false
         if (r.data === 'upload successful') {
-          this.updateUploadImgStatus(file, 'upload-preview-completed')
+          this.updateUploadImgCompleted(file)
+        } else {
+          this.updateUploadImgFailed(file)
         }
       })
 
@@ -326,27 +327,39 @@ export default {
       reader.onload = (function (file, id) {
         // debugger
         return function (e) {
-          document.getElementById('uploadPanel').innerHTML =
-            [document.getElementById('uploadPanel').innerHTML +
-            '<div id="', id, '" style="display:inline-block"><img src="', e.target.result, '" class="upload-preview-pending"/></div>'].join('')
+          document.getElementById('uploadPanel').innerHTML +=
+            ['<div id="', id, '" style="display:inline-block;position:relative"><img id="img-', id, '" src="', e.target.result, '" class="upload-preview upload-preview-pending"/></div>'].join('')
         }
       })(file, id)
 
       reader.readAsDataURL(file, id)
     },
-    updateUploadImgStatus (fileObj, className) {
+    updateUploadImgStatus (fileObj) {
       var file = fileObj.file
       var id = fileObj.id
       var reader = new FileReader()
       reader.onload = (function (file, id) {
         // debugger
         return function (e) {
-          document.getElementById(id).innerHTML =
-            ['<img id="', id, '" src="', e.target.result, '" class="', className, '"/>'].join('')
+          document.getElementById(id).innerHTML +=
+            ['<div id="spin-', id, '"class="spin"><i class="fa fa-spinner fa-spin"/></div>'].join('')
         }
       })(file, id)
 
       reader.readAsDataURL(file, id)
+    },
+    updateUploadImgCompleted (fileObj) {
+      var id = fileObj.id
+      var imgId = ['img-', id].join('')
+      document.getElementById(imgId).classList.remove('upload-preview-pending')
+      var spinId = ['spin-', id].join('')
+      var spin = document.getElementById(spinId)
+      spin.parentNode.removeChild(spin)
+    },
+    updateUploadImgFailed (fileObj) {
+      var id = fileObj.id
+      document.getElementById(id).innerHTML +=
+            ['<div id="failed-', id, '"class="spin"><i class="fas fa-ban"/></div>'].join('')
     }
   },
   apollo: {

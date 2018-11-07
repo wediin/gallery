@@ -19,12 +19,10 @@
 
 <script>
 import Side from '@/views/Sidebar'
-import Upload from '@/views/Upload'
 
 export default {
   components: {
-    Side,
-    Upload
+    Side
   }
 
 }

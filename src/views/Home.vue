@@ -44,7 +44,7 @@
         v-b-modal.uploadModal=""
         variant="info"
         class="button-float"
-        @click="show=true">
+        @click="openUploader">
         <i class="fa fa-plus"/>
       </b-button>
       <b-modal
@@ -58,20 +58,9 @@
               type="text"
               placeholder="我的名字"/>
           </div>
-          <div class="upload">
-            <ul>
-              <li
-                v-for="file in files"
-                :key="file.id"
-                style="text-align: left;">
-                <span>{{ file.name }}</span> -
-                <span v-if="file.error">{{ file.error }}</span>
-                <span v-else-if="file.success">success</span>
-                <span v-else-if="file.active">active</span>
-                <span v-else>pending</span>
-              </li>
-            </ul>
-          </div>
+          <div
+            id="uploadPanel"
+            class="upload"/>
         </div>
         <div
           slot="modal-footer"
@@ -161,11 +150,36 @@
     text-align:center;
     box-shadow: 2px 2px 3px #64363C;
   }
+  .upload-preview-pending{
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: 2px;
+    opacity: 0.5;
+    width: 60px;
+    height: 60px;
+  }
+  .upload-preview-uploading{
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: 2px;
+    opacity: 0.8;
+    width: 60px;
+    height: 60px;
+  }
+  .upload-preview-completed{
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 3px;
+    margin-bottom: 2px;
+    width: 60px;
+    height: 60px;
+  }
 </style>
 
 <script>
 // @ is an alias to /src
-import photoAPI from '@/api/photo'
 import DateDiff from 'date-diff'
 import VueGallery from 'vue-gallery'
 import gql from 'graphql-tag'
@@ -260,6 +274,7 @@ export default {
       if (newFile && !oldFile) {
         // add
         console.log('add', newFile)
+        this.generateUploadImgElement(newFile)
       }
       if (newFile && oldFile) {
         // update
@@ -282,16 +297,56 @@ export default {
       let formdata = new FormData()
       formdata.append('file', file.file)
       formdata.append('contributor', this.contributor)
+      this.updateUploadImgStatus(file, 'upload-preview-uploading')
 
-      request.post('upload', formdata, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      }).then(r => {
+      request.post('upload', formdata,
+        {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }).then(r => {
         this.$apollo.queries.photos.refetch()
+        // this.show = false
+        if (r.data === 'upload successful') {
+          this.updateUploadImgStatus(file, 'upload-preview-completed')
+        }
       })
 
       return new Promise((resolve, reject) => {
         resolve()
       })
+    },
+    openUploader () {
+      this.uploadCounter = 0
+      this.show = true
+      document.getElementById('uploadPanel').innerHTML = ''
+    },
+    generateUploadImgElement (fileObj) {
+      var file = fileObj.file
+      var id = fileObj.id
+      var reader = new FileReader()
+      reader.onload = (function (file, id) {
+        // debugger
+        return function (e) {
+          document.getElementById('uploadPanel').innerHTML =
+            [document.getElementById('uploadPanel').innerHTML +
+            '<div id="', id, '" style="display:inline-block"><img src="', e.target.result, '" class="upload-preview-pending"/></div>'].join('')
+        }
+      })(file, id)
+
+      reader.readAsDataURL(file, id)
+    },
+    updateUploadImgStatus (fileObj, className) {
+      var file = fileObj.file
+      var id = fileObj.id
+      var reader = new FileReader()
+      reader.onload = (function (file, id) {
+        // debugger
+        return function (e) {
+          document.getElementById(id).innerHTML =
+            ['<img id="', id, '" src="', e.target.result, '" class="', className, '"/>'].join('')
+        }
+      })(file, id)
+
+      reader.readAsDataURL(file, id)
     }
   },
   apollo: {

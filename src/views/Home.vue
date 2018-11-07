@@ -316,6 +316,7 @@ export default {
       })
     },
     openUploader () {
+      this.files = []
       this.uploadCounter = 0
       this.show = true
       document.getElementById('uploadPanel').innerHTML = ''

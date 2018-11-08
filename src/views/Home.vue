@@ -345,11 +345,10 @@ export default {
     openUploader () {
       this.files = []
       this.uploadPhotos = []
-      this.uploadCounter = 0
       this.show = true
     },
     generateUploadPhotoElement (fileObj) {
-      const self = this
+      const me = this
       const reader = new FileReader()
       const file = fileObj.file
       const id = fileObj.id
@@ -361,13 +360,16 @@ export default {
           src: file.result,
           status: 'pending'
         }
-        self.uploadPhotos.push(photo)
+        me.uploadPhotos.push(photo)
       })
 
       reader.readAsDataURL(file)
     },
     updateUploadPhotoStatus (photoId, status) {
       const index = this.uploadPhotos.findIndex(photo => photo.id === photoId)
+      if (index < 0) {
+        return
+      }
       this.uploadPhotos[index].status = status
     }
   },

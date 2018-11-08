@@ -165,10 +165,7 @@
     position:relative;
     z-index: 100;
     padding: 3px;
-    margin-left: 3px;
-    margin-right: 3px;
-    margin-top: 3px;
-    margin-bottom: 2px;
+    margin: 3px 3px 2px 3px;
     width: 60px;
     height: 60px;
   }
@@ -304,7 +301,7 @@ export default {
         }).then(r => {
         this.$apollo.queries.photos.refetch()
         // this.show = false
-        if (r.data === 'upload successful') {
+        if (r.status === 200) {
           this.updateUploadImgCompleted(file)
         } else {
           this.updateUploadImgFailed(file)

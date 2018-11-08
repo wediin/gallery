@@ -68,7 +68,7 @@
           <button
             v-if="!$refs.upload || !$refs.upload.active"
             type="button"
-            class="float-right btn btn-success"
+            class="float-right btn btn-upload"
             @click.prevent="startUpload">
             <i
               class="fa fa-arrow-up"
@@ -78,12 +78,12 @@
           <button
             v-else=""
             type="button"
-            class="float-right btn btn-danger"
-            @click.prevent="$refs.upload.active = false">
+            class="float-right btn btn-upload"
+            disabled>
             <i
               class="fa fa-stop"
               aria-hidden="true"/>
-            Stop Upload
+            上傳中
           </button>
           <file-upload
             ref="upload"
@@ -92,7 +92,7 @@
             v-model="files"
             :custom-action="uploadFile"
             style="margin-right: 10px"
-            class="float-right btn btn-primary"
+            class="float-right btn btn-select"
             extensions="gif,jpg,jpeg,png,webp"
             accept="image/png,image/gif,image/jpeg,image/webp"
             @input-filter="inputFilter"
@@ -375,3 +375,97 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  .btn-upload {
+    color: #FFFFFF;
+    background-color: #AB3B3A;
+    border-color: #AB3B3A;
+  }
+
+  .btn-upload:hover,
+  .btn-upload:focus,
+  .btn-upload:active,
+  .btn-upload.active,
+  .open .dropdown-toggle.btn-upload {
+    color: #FFFFFF;
+    background-color: #CB4042;
+    border-color: #AB3B3A;
+  }
+
+  .btn-upload:active,
+  .btn-upload.active,
+  .open .dropdown-toggle.btn-upload {
+    background-image: none;
+  }
+
+  .btn-upload.disabled,
+  .btn-upload[disabled],
+  fieldset[disabled] .btn-upload,
+  .btn-upload.disabled:hover,
+  .btn-upload[disabled]:hover,
+  fieldset[disabled] .btn-upload:hover,
+  .btn-upload.disabled:focus,
+  .btn-upload[disabled]:focus,
+  fieldset[disabled] .btn-upload:focus,
+  .btn-upload.disabled:active,
+  .btn-upload[disabled]:active,
+  fieldset[disabled] .btn-upload:active,
+  .btn-upload.disabled.active,
+  .btn-upload[disabled].active,
+  fieldset[disabled] .btn-upload.active {
+    background-color: #AB3B3A;
+    border-color: #AB3B3A;
+  }
+
+  .btn-upload .badge {
+    color: #AB3B3A;
+    background-color: #FFFFFF;
+  }
+
+  .btn-select {
+    color: #FFFFFF;
+    background-color: #20604F;
+    border-color: #20604F;
+  }
+
+  .btn-select:hover,
+  .btn-select:focus,
+  .btn-select:active,
+  .btn-select.active,
+  .open .dropdown-toggle.btn-select {
+    color: #FFFFFF;
+    background-color: #00896C;
+    border-color: #20604F;
+  }
+
+  .btn-select:active,
+  .btn-select.active,
+  .open .dropdown-toggle.btn-select {
+    background-image: none;
+  }
+
+  .btn-select.disabled,
+  .btn-select[disabled],
+  fieldset[disabled] .btn-select,
+  .btn-select.disabled:hover,
+  .btn-select[disabled]:hover,
+  fieldset[disabled] .btn-select:hover,
+  .btn-select.disabled:focus,
+  .btn-select[disabled]:focus,
+  fieldset[disabled] .btn-select:focus,
+  .btn-select.disabled:active,
+  .btn-select[disabled]:active,
+  fieldset[disabled] .btn-select:active,
+  .btn-select.disabled.active,
+  .btn-select[disabled].active,
+  fieldset[disabled] .btn-select.active {
+    background-color: #20604F;
+    border-color: #20604F;
+  }
+
+  .btn-select .badge {
+    color: #20604F;
+    background-color: #FFFFFF;
+  }
+</style>

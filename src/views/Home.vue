@@ -287,7 +287,7 @@ export default {
     uploadFile (file, component) {
       const request = axios.create({
         baseURL: 'https://gallery.kvnmm.com/',
-        timeout: 5000
+        timeout: 0
       })
 
       let formdata = new FormData()

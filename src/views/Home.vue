@@ -60,7 +60,35 @@
           </div>
           <div
             id="uploadPanel"
-            class="upload"/>
+            class="upload">
+            <template v-for="photo in uploadPhotos">
+              <div
+                :key="photo.id"
+                :id="photo.id"
+                style="display:inline-block;position:relative"
+              >
+                <img
+                  :src="photo.src"
+                  :class="{
+                    'upload-preview-pending': photo.status === 'pending' || photo.status === 'uploading'
+                  }"
+                  class="upload-preview"
+                >
+                <div
+                  v-if="photo.status === 'uploading'"
+                  class="spin"
+                >
+                  <i class="fa fa-spinner fa-spin" />
+                </div>
+                <div
+                  v-if="photo.status === 'failed'"
+                  class="spin"
+                >
+                  <i class="fas fa-ban" />
+                </div>
+              </div>
+            </template>
+          </div>
         </div>
         <div
           slot="modal-footer"
@@ -242,7 +270,8 @@ export default {
       },
       show: false,
       contributor: '',
-      files: []
+      files: [],
+      uploadPhotos: []
     }
   },
   computed: {
@@ -270,7 +299,7 @@ export default {
       if (newFile && !oldFile) {
         // add
         console.log('add', newFile)
-        this.generateUploadImgElement(newFile)
+        this.generateUploadPhotoElement(newFile)
       }
       if (newFile && oldFile) {
         // update
@@ -290,10 +319,11 @@ export default {
         timeout: 0
       })
 
+      this.updateUploadPhotoStatus(file.id, 'uploading')
+
       let formdata = new FormData()
       formdata.append('file', file.file)
       formdata.append('contributor', this.contributor)
-      this.updateUploadImgStatus(file)
 
       request.post('upload', formdata,
         {
@@ -302,9 +332,9 @@ export default {
         this.$apollo.queries.photos.refetch()
         // this.show = false
         if (r.status === 200) {
-          this.updateUploadImgCompleted(file)
+          this.updateUploadPhotoStatus(file.id, 'uploaded')
         } else {
-          this.updateUploadImgFailed(file)
+          this.updateUploadPhotoStatus(file.id, 'failed')
         }
       })
 
@@ -314,50 +344,33 @@ export default {
     },
     openUploader () {
       this.files = []
-      this.uploadCounter = 0
+      this.uploadPhotos = []
       this.show = true
-      document.getElementById('uploadPanel').innerHTML = ''
     },
-    generateUploadImgElement (fileObj) {
-      var file = fileObj.file
-      var id = fileObj.id
-      var reader = new FileReader()
-      reader.onload = (function (file, id) {
-        // debugger
-        return function (e) {
-          document.getElementById('uploadPanel').innerHTML +=
-            ['<div id="', id, '" style="display:inline-block;position:relative"><img id="img-', id, '" src="', e.target.result, '" class="upload-preview upload-preview-pending"/></div>'].join('')
-        }
-      })(file, id)
+    generateUploadPhotoElement (fileObj) {
+      const me = this
+      const reader = new FileReader()
+      const file = fileObj.file
+      const id = fileObj.id
 
-      reader.readAsDataURL(file, id)
-    },
-    updateUploadImgStatus (fileObj) {
-      var file = fileObj.file
-      var id = fileObj.id
-      var reader = new FileReader()
-      reader.onload = (function (file, id) {
-        // debugger
-        return function (e) {
-          document.getElementById(id).innerHTML +=
-            ['<div id="spin-', id, '"class="spin"><i class="fa fa-spinner fa-spin"/></div>'].join('')
+      reader.addEventListener('load', () => {
+        const file = event.target
+        const photo = {
+          id: id,
+          src: file.result,
+          status: 'pending'
         }
-      })(file, id)
+        me.uploadPhotos.push(photo)
+      })
 
-      reader.readAsDataURL(file, id)
+      reader.readAsDataURL(file)
     },
-    updateUploadImgCompleted (fileObj) {
-      var id = fileObj.id
-      var imgId = ['img-', id].join('')
-      document.getElementById(imgId).classList.remove('upload-preview-pending')
-      var spinId = ['spin-', id].join('')
-      var spin = document.getElementById(spinId)
-      spin.parentNode.removeChild(spin)
-    },
-    updateUploadImgFailed (fileObj) {
-      var id = fileObj.id
-      document.getElementById(id).innerHTML +=
-            ['<div id="failed-', id, '"class="spin"><i class="fas fa-ban"/></div>'].join('')
+    updateUploadPhotoStatus (photoId, status) {
+      const index = this.uploadPhotos.findIndex(photo => photo.id === photoId)
+      if (index < 0) {
+        return
+      }
+      this.uploadPhotos[index].status = status
     }
   },
   apollo: {

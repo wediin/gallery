@@ -41,15 +41,13 @@
     </b-card-group> -->
     <div>
       <b-button
-        v-b-modal.uploadModal=""
         variant="info"
         class="button-float"
         @click="openUploader">
         <i class="fa fa-plus"/>
       </b-button>
       <b-modal
-        id="uploadModal"
-        v-model="show"
+        v-model="uploadModalShow"
         title="照片上傳">
         <div>
           <div>
@@ -268,7 +266,7 @@ export default {
         // Close the gallery by swiping up or down:
         closeOnSwipeUpOrDown: true
       },
-      show: false,
+      uploadModalShow: false,
       contributor: '',
       files: [],
       uploadPhotos: []
@@ -330,7 +328,6 @@ export default {
           headers: { 'Content-Type': 'multipart/form-data' }
         }).then(r => {
         this.$apollo.queries.photos.refetch()
-        // this.show = false
         if (r.status === 200) {
           this.updateUploadPhotoStatus(file.id, 'uploaded')
         } else {
@@ -345,7 +342,7 @@ export default {
     openUploader () {
       this.files = []
       this.uploadPhotos = []
-      this.show = true
+      this.uploadModalShow = true
     },
     generateUploadPhotoElement (fileObj) {
       const me = this

@@ -176,6 +176,12 @@
     text-align:center;
     box-shadow: 2px 2px 3px #64363C;
   }
+  .button-float:target,
+  .button-float:active,
+  .button-float:focus,
+  .button-float:active:focus{
+    box-shadow: 2px 2px 3px #64363C !important;
+  }
   .spin{
     position:absolute;
     z-index:101;

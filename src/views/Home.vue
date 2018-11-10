@@ -7,9 +7,9 @@
       @close="index = null"/>
     <div class="kgroup">
       <img
-        v-lazy="photo.thumbURL"
+        v-lazy="photo.thumb.url"
         v-for="(photo, idx) in photos"
-        :key="photo.thumbURL"
+        :key="photo.thumb.url"
         class="kcard"
         @click="index = idx">
     </div>
@@ -281,7 +281,7 @@ export default {
   computed: {
     photoSrc () {
       return this.photos.map((item) => {
-        return item.webviewURL
+        return item.webview.url
       })
     }
   },
@@ -378,16 +378,16 @@ export default {
   },
   apollo: {
     photos: gql`query {
-          photos {
-              id
-              contributor
-              originURL
-              webviewURL
-              thumbURL
-              time
-              masked
-          }
-      }`
+      photos {
+        thumb {
+          url
+        }
+        webview {
+          url
+        }
+        time
+      }
+    }`
   }
 }
 </script>

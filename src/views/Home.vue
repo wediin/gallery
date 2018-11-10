@@ -204,6 +204,10 @@
   .upload-preview-pending{
     opacity: 0.5;
   }
+
+  .modal-open {
+    overflow: inherit !important
+  }
 </style>
 
 <script>

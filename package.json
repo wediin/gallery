@@ -22,7 +22,6 @@
     "mockjs": "^1.0.1-beta3",
     "vue": "^2.5.17",
     "vue-apollo": "^3.0.0-beta.25",
-    "vue-gallery": "^1.4.2",
     "vue-lazyload": "^1.2.6",
     "vue-lorem-ipsum": "0.0.1",
     "vue-router": "^3.0.1",

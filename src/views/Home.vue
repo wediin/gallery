@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-gallery
+    <preview
       :images="photoSrc"
       :index="index"
       :options="galleryOptions"
@@ -209,16 +209,16 @@
 <script>
 // @ is an alias to /src
 import DateDiff from 'date-diff'
-import VueGallery from 'vue-gallery'
 import gql from 'graphql-tag'
 import FileUpload from 'vue-upload-component'
 import axios from 'axios'
+import Preview from './Preview'
 
 export default {
   name: 'Home',
   components: {
-    VueGallery,
-    FileUpload
+    FileUpload,
+    Preview
   },
   filters: {
     dateDiff (timestamp) {

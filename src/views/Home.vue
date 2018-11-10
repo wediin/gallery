@@ -275,7 +275,8 @@ export default {
       uploadModalShow: false,
       contributor: '',
       files: [],
-      uploadPhotos: []
+      uploadPhotos: [],
+      uploadedCount: 0
     }
   },
   computed: {
@@ -336,6 +337,10 @@ export default {
         this.$apollo.queries.photos.refetch()
         if (r.status === 200) {
           this.updateUploadPhotoStatus(file.id, 'uploaded')
+          this.uploadedCount++
+          if (this.uploadedCount === this.uploadPhotos.length) {
+            this.uploadModalShow = false
+          }
         } else {
           this.updateUploadPhotoStatus(file.id, 'failed')
         }
@@ -348,6 +353,7 @@ export default {
     openUploader () {
       this.files = []
       this.uploadPhotos = []
+      this.uploadedCount = 0
       this.uploadModalShow = true
     },
     generateUploadPhotoElement (fileObj) {

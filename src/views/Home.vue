@@ -5,40 +5,20 @@
       :index="index"
       :options="galleryOptions"
       @close="index = null"/>
-    <div class="kgroup">
-      <img
-        v-lazy="photo.thumb.url"
-        v-for="(photo, idx) in photos"
-        :key="photo.thumb.url"
-        class="kcard"
-        @click="index = idx">
-    </div>
-    <!-- <div
-      v-lazy-container="{ selector: 'img', error: 'xxx.jpg', loading: '@/assets/loading.gif'}"
-      class="kgroup">
-      <img
-        v-for="(photo, idx) in photos"
-        :key="photo.thumbURL"
-        :data-src="photo.thumbURL"
-        class="kcard"
-        @click.native="index = idx">
-    </div> -->
-    <!-- <b-card-group
-      :style="{columnCount: 4, columnGap: 5 + 'px'}"
-      columns>
-      <b-card
-        v-for="(photo, idx) in photos"
-        :key="photo.id"
-        :img-src="photo.thumbURL"
-        :img-alt="photo.thumbURL"
-        style="display: inline-block"
-        class="kcard"
-        header-class="kimg"
-        no-body
-        img-fluid
-
-        @click="index = idx"/>
-    </b-card-group> -->
+    <section
+      class="kImgSection">
+      <div
+        v-for="(photo, idx) in photoObject"
+        :style="photo.thumb.containerStyle"
+        :key="idx"
+        class="kImgContainer">
+        <i :style="photo.thumb.placeholderStyle"/>
+        <img
+          v-lazy="photo.thumb.url"
+          class="kImg"
+          @click="index = idx">
+      </div>
+    </section>
     <div>
       <b-button
         variant="info"
@@ -133,35 +113,24 @@
 </template>
 
 <style>
-  .kgroup {
+  .kImgSection {
     display: flex;
-    align-items: left;
-    justify-content: left;
-    flex-direction: row;
     flex-wrap: wrap;
-    flex-flow: row wrap;
-    align-content: flex-end;
   }
-  .kcard {
-    display: inline-block;
-    display: flex;
-    width: 31%;
-    margin: 2px;
-    object-fit: cover; /* Do not scale the image */
-    object-position: top; /* Center the image within the element */
-    /* margin-right: 0;
-    margin-left: 0;
-    margin-bottom: 8px !important; */
+  .kImgSection::after {
+    content: '';
+    flex-grow: 999999999;
   }
-  .kcard:before {
-    padding-top: 100%;
-    display: block;
+  .kImgContainer {
+    margin: 1px;
+    position: relative;
   }
-  .kimg {
-    border-top-left-radius: 2px !important;
-    border-top-right-radius: 2px !important;
-    border-bottom-left-radius: 2px !important;
-    border-bottom-right-radius: 2px !important;
+  .kImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    vertical-align: bottom;
   }
   .button-float{
     position:fixed;
@@ -276,6 +245,7 @@ export default {
         // Close the gallery by swiping up or down:
         closeOnSwipeUpOrDown: true
       },
+      defaultImgWidth: 200,
       uploadModalShow: false,
       contributor: '',
       files: [],
@@ -288,7 +258,38 @@ export default {
       return this.photos.map((item) => {
         return item.webview.url
       })
+    },
+    photoObject () {
+      return this.photos.map((photo) => {
+        const width = photo.thumb.width
+        const height = photo.thumb.height
+        photo.thumb = {
+          ...photo.thumb,
+          containerStyle: {
+            width: width * this.defaultImgWidth / height + 'px',
+            flexGrow: width * 200 / height
+          },
+          placeholderStyle: {
+            display: 'block',
+            paddingBottom: height / width * 100 + '%'
+          }
+        }
+        return photo
+      })
     }
+  },
+  mounted () {
+    const vm = this
+    const query = window.matchMedia('(min-width: 768px)')
+    const listener = function (query) {
+      if (query.matches) {
+        vm.defaultImgWidth = 200
+      } else {
+        vm.defaultImgWidth = 100
+      }
+    }
+    listener(query)
+    query.addListener(listener)
   },
   methods: {
     inputFilter (newFile, oldFile, prevent) {
@@ -390,9 +391,13 @@ export default {
     photos: gql`query {
       photos {
         thumb {
+          width
+          height
           url
         }
         webview {
+          width
+          height
           url
         }
         time

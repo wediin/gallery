@@ -10,7 +10,7 @@
       <div
         v-for="(photo, idx) in photoObject"
         :style="photo.thumb.containerStyle"
-        :key="idx"
+        :key="photo.thumb.url"
         class="kImgContainer">
         <i :style="photo.thumb.placeholderStyle"/>
         <img

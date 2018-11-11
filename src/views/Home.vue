@@ -8,13 +8,14 @@
     <section
       class="kImgSection">
       <div
+        v-lazy-container="{ selector: 'img', error: 'xxx.jpg', loading: '@/assets/loading.gif' }"
         v-for="(photo, idx) in photoObject"
         :style="photo.thumb.containerStyle"
-        :key="idx"
+        :key="photo.thumb.url"
         class="kImgContainer">
         <i :style="photo.thumb.placeholderStyle"/>
         <img
-          v-lazy="photo.thumb.url"
+          :data-src="photo.thumb.url"
           class="kImg"
           @click="index = idx">
       </div>

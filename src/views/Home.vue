@@ -113,6 +113,11 @@
 </template>
 
 <style>
+  @media screen and (min-width: 768px) {
+    html {
+      width: calc(100vw - 17px);
+    }
+  }
   .kImgSection {
     display: flex;
     flex-wrap: wrap;
@@ -175,7 +180,8 @@
   }
 
   .modal-open {
-    overflow: inherit !important
+    padding-right: 0px !important;
+    overflow: inherit !important;
   }
 </style>
 

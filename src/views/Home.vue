@@ -138,6 +138,17 @@
     width: 100%;
     vertical-align: bottom;
   }
+  .kImg[lazy=loaded] {
+     animation: fade 1s;
+  }
+  @keyframes fade {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
   .button-float{
     position:fixed;
     width:60px;

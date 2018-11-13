@@ -95,6 +95,7 @@
             ref="upload"
             :multiple="true"
             :size="1024 * 1024 * 10"
+            :thread="5"
             v-model="files"
             :custom-action="uploadFile"
             style="margin-right: 10px"

@@ -274,7 +274,10 @@ export default {
   computed: {
     photoSrc () {
       return this.photos.map((item) => {
-        return item.webview.url
+        return {
+          url: item.webview.url,
+          contributor: item.contributor
+        }
       })
     },
     photoObject () {
@@ -418,7 +421,7 @@ export default {
           height
           url
         }
-        time
+        contributor
       }
     }`
   }

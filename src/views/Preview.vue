@@ -127,19 +127,20 @@ export default {
         options.container = this.$el
       }
 
-      this.instance = instance(this.images, options)
+      this.instance = instance(this.images.map((item) => { return item.url }), options)
     },
     onSlideCustom (index, slide) {
       this.$emit('onslide', { index, slide })
 
       const image = this.images[index]
-      if (image !== undefined) {
-        const text = image.description
+      if (image.url !== undefined) {
+        let text = ''
         const node = this.instance.container.find('.description')
-        if (text) {
-          node.empty()
-          node[0].appendChild(document.createTextNode(text))
+        if (image.contributor && image.contributor !== 'default') {
+          text = 'By ' + image.contributor
         }
+        node.empty()
+        node[0].appendChild(document.createTextNode(text))
       }
     }
   }

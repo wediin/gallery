@@ -72,7 +72,7 @@
           slot="modal-footer"
           class="w-100">
           <button
-            v-if="!$refs.upload || !$refs.upload.active"
+            v-if="!uploading"
             type="button"
             class="float-right btn btn-upload"
             @click.prevent="startUpload">
@@ -98,6 +98,9 @@
             :thread="5"
             v-model="files"
             :custom-action="uploadFile"
+            :class="{
+              'd-none': uploading
+            }"
             style="margin-right: 10px"
             class="float-right btn btn-select"
             extensions="gif,jpg,jpeg,png,webp"
@@ -107,6 +110,15 @@
             <i class="fa fa-plus"/>
             選擇照片
           </file-upload>
+          <button
+            v-if="uploading"
+            type="button"
+            style="margin-right: 10px"
+            class="float-right btn btn-select"
+            disabled>
+            <i class="fa fa-plus"/>
+            選擇照片
+          </button>
         </div>
       </b-modal>
     </div>
@@ -264,11 +276,11 @@ export default {
         closeOnSwipeUpOrDown: true
       },
       defaultImgWidth: 200,
+      uploading: false,
       uploadModalShow: false,
       contributor: '',
       files: [],
-      uploadPhotos: [],
-      uploadedCount: 0
+      uploadPhotos: []
     }
   },
   computed: {
@@ -328,20 +340,14 @@ export default {
     },
     inputFile (newFile, oldFile) {
       if (newFile && !oldFile) {
-        // add
-        console.log('add', newFile)
         this.generateUploadPhotoElement(newFile)
-      }
-      if (newFile && oldFile) {
-        // update
-        console.log('update', newFile)
-      }
-      if (!newFile && oldFile) {
-        // remove
-        console.log('remove', oldFile)
       }
     },
     startUpload () {
+      if (this.files.length === 0) {
+        return
+      }
+      this.uploading = true
       this.$refs.upload.active = true
     },
     uploadFile (file, component) {
@@ -363,8 +369,8 @@ export default {
         this.$apollo.queries.photos.refetch()
         if (r.status === 200) {
           this.updateUploadPhotoStatus(file.id, 'uploaded')
-          this.uploadedCount++
-          if (this.uploadedCount === this.uploadPhotos.length) {
+          if (this.$refs.upload && this.$refs.upload.uploaded) {
+            this.uploading = false
             this.uploadModalShow = false
           }
         } else {
@@ -379,7 +385,6 @@ export default {
     openUploader () {
       this.files = []
       this.uploadPhotos = []
-      this.uploadedCount = 0
       this.uploadModalShow = true
     },
     generateUploadPhotoElement (fileObj) {

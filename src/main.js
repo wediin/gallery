@@ -46,10 +46,7 @@ const apolloProvider = new VueApollo({
   defaultClient: apolloClient
 })
 Vue.use(VueApollo)
-Vue.use(VueLazyload, {
-  error: 'dist/error.png',
-  loading: '@/assets/loading.gif'
-})
+Vue.use(VueLazyload, {})
 
 Vue.config.productionTip = false
 

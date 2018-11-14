@@ -17,7 +17,7 @@
     "apollo-boost": "^0.1.18",
     "axios": "^0.18.0",
     "blueimp-gallery": "^2.33.0",
-    "bootstrap-vue": "^2.0.0-rc.11",
+    "bootstrap-vue": "2.0.0-rc.10",
     "date-diff": "^0.2.1",
     "graphql": "^14.0.2",
     "mockjs": "^1.0.1-beta3",

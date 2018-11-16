@@ -9,7 +9,7 @@
 
     婚禮每個重要瞬間都不錯過
     美美的婚禮照片都在這裡
-    大家一起看、一起分享喔</p>
+    <span id="button-notice">快按右下角按鈕一起上傳個！</span></p>
   </div>
 </template>
 
@@ -24,6 +24,9 @@ export default {
     p {
       color: #1C1C1C;
       white-space: pre-line;
+      #button-notice {
+        color: #AB3B3A;
+      }
     }
     #title {
         max-width: 50%;

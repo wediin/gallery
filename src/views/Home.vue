@@ -1,11 +1,6 @@
 <template>
   <div>
-    <preview
-      :images="photoSrc"
-      :index="index"
-      :options="galleryOptions"
-      @close="index = null"/>
-    <section
+    <Photoswipe
       class="kImgSection">
       <div
         v-for="(photo, idx) in photoObject"
@@ -15,10 +10,11 @@
         <i :style="photo.thumb.placeholderStyle"/>
         <img
           v-lazy="photo.thumb.url"
+          :data-pswp-src="photo.webview.url"
           class="kImg"
           @click="index = idx">
       </div>
-    </section>
+    </Photoswipe>
     <div>
       <b-button
         variant="info"
@@ -215,13 +211,11 @@ import DateDiff from 'date-diff'
 import gql from 'graphql-tag'
 import FileUpload from 'vue-upload-component'
 import axios from 'axios'
-import Preview from './Preview'
 
 export default {
   name: 'Home',
   components: {
-    FileUpload,
-    Preview
+    FileUpload
   },
   filters: {
     dateDiff (timestamp) {

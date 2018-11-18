@@ -25,6 +25,7 @@
     "vue-apollo": "^3.0.0-beta.25",
     "vue-lazyload": "^1.2.6",
     "vue-lorem-ipsum": "0.0.1",
+    "vue-pswipe": "^0.8.2",
     "vue-router": "^3.0.1",
     "vue-upload-component": "^2.8.14",
     "vuex": "^3.0.1"
